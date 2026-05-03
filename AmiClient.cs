@@ -155,7 +155,7 @@ namespace Ami
                 throw new InvalidOperationException("client is not started");
             }
 
-            var tcs = new TaskCompletionSource<AmiMessage>(TaskCreationOptions.AttachedToParent);
+            var tcs = new TaskCompletionSource<AmiMessage>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             if(!this.inFlight.TryAdd(action["ActionID"], tcs))
             {
@@ -258,7 +258,7 @@ namespace Ami
                     if(message.Fields.FirstOrDefault().Key == "Response" &&
                        this.inFlight.TryGetValue(message["ActionID"], out var tcs))
                     {
-                        tcs.SetResult(message);
+                        tcs.TrySetResult(message);
                     }
                     else
                     {
