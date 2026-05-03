@@ -31,6 +31,8 @@ namespace Ami
 
         public DateTimeOffset Timestamp { get; private set; }
 
+        public Int64 ReceiveSequenceNumber { get; internal set; }
+
         public AmiMessage()
         {
             this.Timestamp = DateTimeOffset.UtcNow;

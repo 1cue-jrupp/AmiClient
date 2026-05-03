@@ -36,8 +36,8 @@ namespace Ami
         {
             foreach(var observer in this.observers.Keys)
             {
-                Task.Run(() =>
-                {
+                //Task.Run(() =>
+                //{
                     try
                     {
                         observer.OnNext(message);
@@ -47,7 +47,7 @@ namespace Ami
                         observer.OnError(ex);
                         this.Unsubscribe(observer);
                     }
-                });
+                //});
             }
         }
 

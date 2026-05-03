@@ -36,6 +36,8 @@ namespace Ami
 
         private readonly ConcurrentDictionary<String, TaskCompletionSource<AmiMessage>> inFlight;
 
+        private Int64 receiveSequence;
+
         public AmiClient()
         {
             this.observers = new ConcurrentDictionary<IObserver<AmiMessage>, Subscription>(
@@ -254,6 +256,7 @@ namespace Ami
                     }
 
                     var message = AmiMessage.FromBytes(payload);
+                    message.ReceiveSequenceNumber = Interlocked.Increment(ref this.receiveSequence);
 
                     if(message.Fields.FirstOrDefault().Key == "Response" &&
                        this.inFlight.TryGetValue(message["ActionID"], out var tcs))
